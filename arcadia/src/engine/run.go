@@ -16,9 +16,7 @@ func (engine *Engine) Run() {
 			engine.HomeRendering()
 			engine.HomeLogic()
 
-		case SETTINGS:
-			engine.SettingsLogic()
-			engine.SettingsRendering()
+	
 
 		case PLAY:
 			switch engine.StateEngine {

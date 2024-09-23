@@ -12,7 +12,7 @@ func (e *Engine) Rendering() {
 }
 
 func (e *Engine) HomeRendering() {
-	// chargement de l'image de fond
+	// chargement de l'image de fond du menu
 	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/menu.png"), 0, 0, rl.White)
 
 	// texte du menu
@@ -22,7 +22,7 @@ func (e *Engine) HomeRendering() {
 	rl.DrawText("[Esc] pour quitter", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Esc] pour quitter", 20)/2, int32(rl.GetScreenHeight())/2+100, 20, rl.Gray)
 }
 
-func (e *Engine) InGameRendering() {
+func (e *Engine) InGameRendering() { // rendu ingame
 	rl.ClearBackground(rl.SkyBlue)
 
 	rl.BeginMode2D(e.Camera)
@@ -47,31 +47,35 @@ func (e *Engine) InGameRendering() {
 	// Espacement entre les éléments
 	posY += fontSize + 10
 
-	rl.DrawRectangle(posX-30, posY+700, int32(200), 15, rl.White)
-	rl.DrawRectangle(posX-30, posY+700, int32(e.Player.Health), 15, rl.Green)
-	if e.Player.Health < 100 {
+	// affichage de la barre de vie du joueur
+	rl.DrawRectangle(posX-30, posY+700, int32(200), 15, rl.White)             // barre de vie initial
+	rl.DrawRectangle(posX-30, posY+700, int32(e.Player.Health), 15, rl.Green) // idem
+	if e.Player.Health < 100 {                                                // condition
 		rl.DrawRectangle(posX-30, posY+700, int32(200), 15, rl.White)
-		rl.DrawRectangle(posX-30, posY+700, int32(e.Player.Health), 15, rl.Yellow)
+		rl.DrawRectangle(posX-30, posY+700, int32(e.Player.Health), 15, rl.Yellow) // changement de couleur si la vie < 100
 	}
 	if e.Player.Health < 60 {
 		rl.DrawRectangle(posX-30, posY+700, int32(200), 15, rl.White)
-		rl.DrawRectangle(posX-30, posY+700, int32(e.Player.Health), 15, rl.Orange)
+		rl.DrawRectangle(posX-30, posY+700, int32(e.Player.Health), 15, rl.Orange) // changement de couleur si la vie < 60
 	}
 	if e.Player.Health < 30 {
 		rl.DrawRectangle(posX-30, posY+700, int32(200), 15, rl.White)
-		rl.DrawRectangle(posX-30, posY+700, int32(e.Player.Health), 15, rl.Red)
+		rl.DrawRectangle(posX-30, posY+700, int32(e.Player.Health), 15, rl.Red) // changement de couleur si la vie < 30
 	}
-	rl.DrawText(strconv.Itoa(e.Player.Health), posX-70, posY+699, int32(20), rl.White)
+	rl.DrawText(strconv.Itoa(e.Player.Health), posX-70, posY+699, int32(20), rl.White) // affichage textuel du la vie en temps réel
 
 	// cooldown du dash in game
-	rl.DrawRectangle(posX-30, posY+680, int32(180), 5, rl.White)
-	rl.DrawText(strconv.Itoa(e.Player.TeleportCooldown), posX-70, posY+675, int32(20), rl.White)
-	rl.DrawRectangle(posX-30, posY+680, int32(e.Player.TeleportCooldown), 5, rl.Red)
-	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/minimap.png"), 1165, 0, rl.White)
-	rl.DrawText(strconv.Itoa(int(rl.GetFPS())), posX-70, posY-50, int32(20), rl.White)
+	rl.DrawRectangle(posX-30, posY+680, int32(180), 5, rl.White)                                 // barre du cooldown de dash
+	rl.DrawText(strconv.Itoa(e.Player.TeleportCooldown), posX-70, posY+675, int32(20), rl.White) // affichage textuel du cooldown dash en temps réel
+	rl.DrawRectangle(posX-30, posY+680, int32(e.Player.TeleportCooldown), 5, rl.Red)             // fond de couleur de la barre de cooldown du dash
+
+	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/minimap.png"), 1165, 0, rl.White) // affichage de la carte du jeux en haut a droite du jeux
+
+	rl.DrawText(strconv.Itoa(int(rl.GetFPS())), posX-70, posY-50, int32(20), rl.White) // affichage en temps réel des FPS en haut a gauche du jeux
 }
 
-func (e *Engine) PauseRendering() {
+func (e *Engine) PauseRendering() { // rendu du menu pause
+	// image de fond du menu pause
 	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/zzzzz.png"), 0, 0, rl.White)
 	// texte du menu pause
 	rl.DrawText("ISILDOR", int32(rl.GetScreenWidth())/2-rl.MeasureText("ISILDOR", 80)/2, int32(rl.GetScreenHeight())/2-350, 80, rl.Orange)
@@ -80,19 +84,15 @@ func (e *Engine) PauseRendering() {
 	rl.DrawText("[Q]/[A] pour quitter", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Q]/[A] pour quitter", 30)/2, int32(rl.GetScreenHeight())/2+100, 30, rl.Black)
 }
 
-func (e *Engine) GameOverRendering() {
+func (e *Engine) GameOverRendering() { // rendu du GameOver
+	// couleur de fond
 	rl.ClearBackground(rl.Black)
+	// image de fond
 	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/gameOver.jpg"), 0, 0, rl.White)
 
 }
 
-func (e *Engine) SettingsRendering() {
-	rl.ClearBackground(rl.White)
-
-	rl.DrawText("Paramètres", int32(rl.GetScreenWidth())/2-rl.MeasureText("Paramètres", 60)/2, int32(rl.GetScreenHeight())/2-150, 60, rl.DarkGray)
-}
-
-func (e *Engine) RenderPlayer() {
+func (e *Engine) RenderPlayer() { // rendu joueur
 
 	rl.DrawTexturePro(
 		e.Player.Sprite,
@@ -105,7 +105,7 @@ func (e *Engine) RenderPlayer() {
 
 }
 
-func (e *Engine) RenderMonsters() {
+func (e *Engine) RenderMonsters() { // rendu monstre
 
 	for _, monster := range e.Monsters {
 		if monster.IsAlive {
@@ -122,7 +122,7 @@ func (e *Engine) RenderMonsters() {
 
 }
 
-func (e *Engine) RenderDialog(m entity.Monster, sentence string) {
+func (e *Engine) RenderDialog(m entity.Monster, sentence string) { // rendu du dialog
 	rl.BeginMode2D(e.Camera)
 
 	rl.DrawText(
@@ -136,32 +136,32 @@ func (e *Engine) RenderDialog(m entity.Monster, sentence string) {
 	rl.EndMode2D()
 }
 
-func (e *Engine) RenderHealth() {
+func (e *Engine) RenderHealth() { // rendu de la vie des monstres
 	rl.BeginMode2D(e.Camera)
 
 	for _, monster := range e.Monsters {
-		distance := rl.Vector2Distance(e.Player.Position, monster.Position)
-		if distance <= ChaseDistance {
-			if monster.IsAlive && monster.IsMove {
+		distance := rl.Vector2Distance(e.Player.Position, monster.Position) // affichage à une certaine distance
+		if distance <= ChaseDistance {                                      // condition pour la distance de chasse
+			if monster.IsAlive && monster.IsMove { // condition permettant d'etre sur du monstre
+				// affichage de la barre de vie des monstres
 				rl.DrawRectangle(int32(monster.Position.X)+25, int32(monster.Position.Y)+30, int32(20), 5, rl.DarkBrown)
-				rl.DrawText(strconv.Itoa(monster.Health), int32(monster.Position.X)+25, int32(monster.Position.Y)+35, int32(3), rl.White)
+				rl.DrawText(strconv.Itoa(monster.Health), int32(monster.Position.X)+25, int32(monster.Position.Y)+35, int32(3), rl.White) // affichage du nombre de vie
 				rl.DrawRectangle(int32(monster.Position.X)+25, int32(monster.Position.Y)+30, int32(monster.Health), 5, rl.Red)
 				rl.DrawRectangle(int32(monster.Position.X)+25, int32(monster.Position.Y)+30, int32(20), 5, rl.DarkBrown)
-				rl.DrawText(strconv.Itoa(monster.Health), int32(monster.Position.X)+25, int32(monster.Position.Y)+35, int32(3), rl.White)
+				rl.DrawText(strconv.Itoa(monster.Health), int32(monster.Position.X)+25, int32(monster.Position.Y)+35, int32(3), rl.White) // affichage du nombre de vie
 				rl.DrawRectangle(int32(monster.Position.X)+25, int32(monster.Position.Y)+30, int32(monster.Health), 5, rl.Red)
 			}
 		}
 	}
 	rl.EndMode2D()
 }
-func (e *Engine) WinRendering() {
-	// chargement de l'image de fond
+func (e *Engine) WinRendering() { // rendu de la Win du jeux
+	// chargement de l'image de fond ainsi que la couleur
 	rl.ClearBackground(rl.White)
 	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/win.jpeg"), 380, 0, rl.White)
 
 	// texte du menu
 	rl.DrawText("WIN", int32(rl.GetScreenWidth())/2-rl.MeasureText("WIN", 80)/2, int32(rl.GetScreenHeight())/2+300, 80, rl.DarkGreen)
-	//rl.DrawText("WIN", int32(rl.GetScreenWidth())/2-rl.MeasureText("WIN", 40)/2, int32(rl.GetScreenHeight())/2-100, 40, rl.Gold)
 	rl.DrawText("ISILDOR", int32(rl.GetScreenWidth())/2-rl.MeasureText("[ISILDOR", 30)/2, int32(rl.GetScreenHeight())/2+100, 30, rl.Gold)
 	rl.DrawText("[Esc] pour quitter", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Esc] pour quitter", 20)/2, int32(rl.GetScreenHeight())/2+200, 20, rl.Gray)
 }
