@@ -49,7 +49,7 @@ func (p *Player) Attack(m *Monster) {
     }
 }
 func (p *Player) ToString() {
-    fmt.Printf(`
+    fmt.Printf(` //
     Joueur:
         Vie: %d,
         Argent: %d,
