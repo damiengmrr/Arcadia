@@ -9,6 +9,7 @@ type Item struct {
 	Price        int
 	IsConsumable bool
 	IsEquippable bool
+
 }
 
 func (i *Item) ToString() {

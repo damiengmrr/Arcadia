@@ -17,14 +17,16 @@ const (
 type engine int
 
 const (
-	INGAME  engine = iota
+	INGAME   engine = iota
 	PAUSE    engine = iota
 	GAMEOVER engine = iota
+	WIN      engine = iota
 )
 
 type Engine struct {
 	Player   entity.Player
 	Monsters []entity.Monster
+	//item     []item.Item
 
 	Music       rl.Music
 	MusicVolume float32
@@ -39,6 +41,10 @@ type Engine struct {
 	StateMenu   menu
 	StateEngine engine
 }
+
 const (
-    ChaseDistance = 100 // Distance à partir de laquelle le monstre commence à poursuivre le joueur
+	ChaseDistance = 113 // Distance à partir de laquelle le monstre commence à poursuivre le joueur
+	RangeMonster  = 40  // distance attaque du monstre
+	RangePlayer   = 45  // distance attaque du joueur
+	TradeDistance = 70  // distance pour trade
 )

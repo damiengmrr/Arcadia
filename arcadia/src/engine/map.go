@@ -145,7 +145,7 @@ func (e *Engine) RenderMap() {
 					destRectangle.Y += 32
 					column_counter = 0
 				}
-				
+
 			}
 			if column_counter >= e.MapJSON.Width {
 				destRectangle.X = 0

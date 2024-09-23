@@ -18,7 +18,7 @@ func Fight(player entity.Player, monster entity.Monster) {
 		if player.Health <= 0 {
 			player.IsAlive = false
 			break
-		} else if monster.Health <= 0 {
+		} else if monster.Health <= 0 || !monster.IsAlive {
 			player.Inventory = append(player.Inventory, monster.Loot...)
 			player.Money += monster.Worth
 			break

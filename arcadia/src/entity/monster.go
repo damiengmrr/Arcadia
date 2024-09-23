@@ -12,19 +12,27 @@ type Monster struct {
 	Name           string
 	Position       rl.Vector2
 	Health         int
+	Pquantity      int
 	Damage         int
+	MaxHealthM     int
 	Loot           []item.Item
 	Worth          int //valeur en argent quand tué
 	Speed          float32
 	IsAlive        bool
 	Cooldown       time.Duration // Durée du cooldown (ex: 2 secondes)
-	LastAttackTime time.Time     // Dernière fois où le monstre a attaqué
+	CooldownPeriod time.Duration
+	LastAttackTime time.Time // Dernière fois où le monstre a attaqué*
+	IsMove         bool      // bouger ou non
+	LastDeadTime   time.Time
 
 	Sprite rl.Texture2D
 }
 
 func (m *Monster) Attack(p *Player) {
-	p.Health -= 7
+	p.Health -= m.Damage
+	if m.Health <= 0 {
+
+	}
 }
 
 func (m *Monster) ToString() {

@@ -12,13 +12,14 @@ func (e *Engine) Rendering() {
 }
 
 func (e *Engine) HomeRendering() {
+	// chargement de l'image de fond
 	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/menu.png"), 0, 0, rl.White)
 
-	rl.DrawText("ARCADIA", int32(rl.GetScreenWidth())/2-rl.MeasureText("ARCADIA", 80)/2, int32(rl.GetScreenHeight())/2-200, 80, rl.DarkGreen)
+	// texte du menu
+	rl.DrawText("ISILDOR", int32(rl.GetScreenWidth())/2-rl.MeasureText("ISILDOR", 80)/2, int32(rl.GetScreenHeight())/2-200, 80, rl.DarkGreen)
 	rl.DrawText("Menu", int32(rl.GetScreenWidth())/2-rl.MeasureText("Menu", 40)/2, int32(rl.GetScreenHeight())/2-100, 40, rl.Gray)
 	rl.DrawText("[Enter] Pour jouer", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Enter] Pour jouer", 20)/2, int32(rl.GetScreenHeight())/2, 20, rl.Gray)
 	rl.DrawText("[Esc] pour quitter", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Esc] pour quitter", 20)/2, int32(rl.GetScreenHeight())/2+100, 20, rl.Gray)
-	rl.DrawText("[TAB] paramètres", int32(rl.GetScreenWidth())/2-rl.MeasureText("[TAB] paramètres", 20)/2, int32(rl.GetScreenHeight())/2+50, 20, rl.Gray)
 }
 
 func (e *Engine) InGameRendering() {
@@ -66,22 +67,22 @@ func (e *Engine) InGameRendering() {
 	rl.DrawRectangle(posX-30, posY+680, int32(180), 5, rl.White)
 	rl.DrawText(strconv.Itoa(e.Player.TeleportCooldown), posX-70, posY+675, int32(20), rl.White)
 	rl.DrawRectangle(posX-30, posY+680, int32(e.Player.TeleportCooldown), 5, rl.Red)
+	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/minimap.png"), 1165, 0, rl.White)
+	rl.DrawText(strconv.Itoa(int(rl.GetFPS())), posX-70, posY-50, int32(20), rl.White)
 }
 
 func (e *Engine) PauseRendering() {
-	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/fond_pause.png"), -20, 0, rl.White)
+	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/zzzzz.png"), 0, 0, rl.White)
 	// texte du menu pause
-	rl.DrawText("Pause", int32(rl.GetScreenWidth())/2-rl.MeasureText("Pause", 45)/2, int32(rl.GetScreenHeight())/2-150, 60, rl.DarkGray)
-	rl.DrawText("[Esc] pour reprendre", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Esc] pour reprendre", 25)/2, int32(rl.GetScreenHeight())/2, 30, rl.Black)
-	rl.DrawText("[Q]/[A] pour quitter", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Q]/[A] pour quitter", 25)/2, int32(rl.GetScreenHeight())/2+100, 30, rl.Black)
+	rl.DrawText("ISILDOR", int32(rl.GetScreenWidth())/2-rl.MeasureText("ISILDOR", 80)/2, int32(rl.GetScreenHeight())/2-350, 80, rl.Orange)
+	rl.DrawText("Pause", int32(rl.GetScreenWidth())/2-rl.MeasureText("Pause", 60)/2, int32(rl.GetScreenHeight())/2-150, 60, rl.DarkGray)
+	rl.DrawText("[Esc] pour reprendre", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Esc] pour reprendre", 30)/2, int32(rl.GetScreenHeight())/2, 30, rl.Black)
+	rl.DrawText("[Q]/[A] pour quitter", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Q]/[A] pour quitter", 30)/2, int32(rl.GetScreenHeight())/2+100, 30, rl.Black)
 }
 
 func (e *Engine) GameOverRendering() {
-	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/fond_pause.png"), -20, 0, rl.White)
-	// texte du menu pause
-	rl.DrawText("Game Over", int32(rl.GetScreenWidth())/2-rl.MeasureText("Pause", 45)/2, int32(rl.GetScreenHeight())/2-150, 60, rl.DarkGray)
-	rl.DrawText("[Esc] pour reprendre", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Esc] pour reprendre", 25)/2, int32(rl.GetScreenHeight())/2, 30, rl.Black)
-	rl.DrawText("[Q]/[A] pour quitter", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Q]/[A] pour quitter", 25)/2, int32(rl.GetScreenHeight())/2+100, 30, rl.Black)
+	rl.ClearBackground(rl.Black)
+	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/gameOver.jpg"), 0, 0, rl.White)
 
 }
 
@@ -141,7 +142,7 @@ func (e *Engine) RenderHealth() {
 	for _, monster := range e.Monsters {
 		distance := rl.Vector2Distance(e.Player.Position, monster.Position)
 		if distance <= ChaseDistance {
-			if monster.IsAlive {
+			if monster.IsAlive && monster.IsMove {
 				rl.DrawRectangle(int32(monster.Position.X)+25, int32(monster.Position.Y)+30, int32(20), 5, rl.DarkBrown)
 				rl.DrawText(strconv.Itoa(monster.Health), int32(monster.Position.X)+25, int32(monster.Position.Y)+35, int32(3), rl.White)
 				rl.DrawRectangle(int32(monster.Position.X)+25, int32(monster.Position.Y)+30, int32(monster.Health), 5, rl.Red)
@@ -152,4 +153,15 @@ func (e *Engine) RenderHealth() {
 		}
 	}
 	rl.EndMode2D()
+}
+func (e *Engine) WinRendering() {
+	// chargement de l'image de fond
+	rl.ClearBackground(rl.White)
+	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/win.jpeg"), 380, 0, rl.White)
+
+	// texte du menu
+	rl.DrawText("WIN", int32(rl.GetScreenWidth())/2-rl.MeasureText("WIN", 80)/2, int32(rl.GetScreenHeight())/2+300, 80, rl.DarkGreen)
+	//rl.DrawText("WIN", int32(rl.GetScreenWidth())/2-rl.MeasureText("WIN", 40)/2, int32(rl.GetScreenHeight())/2-100, 40, rl.Gold)
+	rl.DrawText("ISILDOR", int32(rl.GetScreenWidth())/2-rl.MeasureText("[ISILDOR", 30)/2, int32(rl.GetScreenHeight())/2+100, 30, rl.Gold)
+	rl.DrawText("[Esc] pour quitter", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Esc] pour quitter", 20)/2, int32(rl.GetScreenHeight())/2+200, 20, rl.Gray)
 }

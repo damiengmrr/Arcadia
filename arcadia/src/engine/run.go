@@ -30,9 +30,13 @@ func (engine *Engine) Run() {
 				engine.PauseRendering()
 				engine.PauseLogic()
 
+			case WIN:
+				engine.WinRendering()
+				engine.WinLogic()
+
 			case GAMEOVER:
-			engine.GameOverRendering()	
-			engine.GameOverLogic()
+				engine.GameOverRendering()
+				engine.GameOverLogic()
 			}
 		}
 
