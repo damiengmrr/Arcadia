@@ -69,7 +69,7 @@ func (e *Engine) InGameRendering() {
 }
 
 func (e *Engine) PauseRendering() {
-	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/fond_pause.png"), -20, 0, rl.White)
+	rl.DrawTexture(rl.LoadTexture("textures/map/tilesets/fond_pause.png"), -20, 0, rl.White) // 
 	// texte du menu pause
 	rl.DrawText("Pause", int32(rl.GetScreenWidth())/2-rl.MeasureText("Pause", 45)/2, int32(rl.GetScreenHeight())/2-150, 60, rl.DarkGray)
 	rl.DrawText("[Esc] pour reprendre", int32(rl.GetScreenWidth())/2-rl.MeasureText("[Esc] pour reprendre", 25)/2, int32(rl.GetScreenHeight())/2, 30, rl.Black)
