@@ -42,16 +42,17 @@ func (e *Engine) SettingsLogic() {
 }
 
 func (e *Engine) InGameLogic() {
-	// Mouvement
+
 	if e.Player.TeleportCooldown > 0 {
 		e.Player.TeleportCooldown-- // Diminue le cooldown de 1 à chaque frame
 	}
 	if e.Player.HealthPlayerCooldown > 0 {
-        e.Player.HealthPlayerCooldown--
-    }
+		e.Player.HealthPlayerCooldown-- // Diminue le cooldown de 1 à chaque frame
+	}
+	// Mouvement
 	if rl.IsKeyDown(rl.KeyW) || rl.IsKeyDown(rl.KeyUp) {
 		e.Player.Position.Y -= e.Player.Speed
-		rl.LoadMusicStream("sounds/music/marche.mp3")
+		rl.LoadMusicStream("sounds/music/marche.mp3") // son de marche
 	}
 	if rl.IsKeyDown(rl.KeyS) || rl.IsKeyDown(rl.KeyDown) {
 		e.Player.Position.Y += e.Player.Speed
@@ -67,7 +68,7 @@ func (e *Engine) InGameLogic() {
 	}
 
 	// dash du joueur
-	if (rl.IsKeyPressed(rl.KeyW) || rl.IsKeyDown(rl.KeyUp)) && rl.IsKeyDown(rl.KeySpace) {
+	if (rl.IsKeyDown(rl.KeyW) || rl.IsKeyDown(rl.KeyUp)) && rl.IsKeyDown(rl.KeySpace) {
 		e.TeleportPlayer1()
 		time.Sleep(500)
 	}
@@ -83,47 +84,47 @@ func (e *Engine) InGameLogic() {
 		e.TeleportPlayer4()
 		time.Sleep(500)
 	}
-
+	// soin
 	if rl.IsKeyDown(rl.KeyF) {
-        e.HealthPlayer()
-    }
-
+		e.HealthPlayer()
+	}
+	// course
 	if (rl.IsKeyDown(rl.KeyRightShift) || rl.IsKeyDown(rl.KeyLeftShift)) && e.Player.CurrentCooldown == 0 {
-        // Vérifier si le joueur a encore du temps de sprint
-        if e.Player.CurrentSprintTime > 0 {
-            e.Player.Speed = 4 // Vitesse de sprint
-            e.Player.IsSprinting = true
-            e.Player.CurrentSprintTime-- // Réduire le temps de sprint restant
-        } else {
-            // Si le temps de sprint est épuisé, démarrer le cooldown
-            e.Player.IsSprinting = false
-            e.Player.Speed = 2.0                                   // Revenir à la vitesse normale
-            e.Player.CurrentCooldown = e.Player.SprintCooldownTime // Commencer le cooldown
-        }
-    } else {
-        // Si le joueur arrête de sprinter ou si le sprint est désactivé
-        e.Player.Speed = 2.0 // Vitesse normale
-        e.Player.IsSprinting = false
-    }
+		// Vérifier si le joueur a encore du temps de sprint
+		if e.Player.CurrentSprintTime > 0 {
+			e.Player.Speed = 4 // Vitesse de sprint
+			e.Player.IsSprinting = true
+			e.Player.CurrentSprintTime-- // Réduire le temps de sprint restant
+		} else {
+			// Si le temps de sprint est épuisé, démarrer le cooldown
+			e.Player.IsSprinting = false
+			e.Player.Speed = 2.0                                   // Revenir à la vitesse normale
+			e.Player.CurrentCooldown = e.Player.SprintCooldownTime // Commencer le cooldown
+		}
+	} else {
+		// Si le joueur arrête de sprinter ou si le sprint est désactivé
+		e.Player.Speed = 2.0 // Vitesse normale
+		e.Player.IsSprinting = false
+	}
 
-    // Gestion du cooldown du sprint
-    if e.Player.CurrentCooldown > 0 {
-        e.Player.CurrentCooldown-- // Décrémenter le cooldown à chaque frame
-        if e.Player.CurrentCooldown == 0 {
-            // Une fois le cooldown terminé, réinitialiser le temps de sprint
-            e.Player.CurrentSprintTime = e.Player.MaxSprintTime
-        }
-    }
+	// Gestion du cooldown du sprint
+	if e.Player.CurrentCooldown > 0 {
+		e.Player.CurrentCooldown-- // Décrémenter le cooldown à chaque frame
+		if e.Player.CurrentCooldown == 0 {
+			// Une fois le cooldown terminé, réinitialiser le temps de sprint
+			e.Player.CurrentSprintTime = e.Player.MaxSprintTime
+		}
+	}
 
-    // Régénération progressive du temps de sprint si le joueur ne sprinte pas
-    if !e.Player.IsSprinting && e.Player.CurrentCooldown == 0 && e.Player.CurrentSprintTime < e.Player.MaxSprintTime {
-        e.Player.CurrentSprintTime++ // Régénérer progressivement le temps de sprint
-    }
+	// Régénération progressive du temps de sprint si le joueur ne sprinte pas
+	if !e.Player.IsSprinting && e.Player.CurrentCooldown == 0 && e.Player.CurrentSprintTime < e.Player.MaxSprintTime {
+		e.Player.CurrentSprintTime++ // Régénérer progressivement le temps de sprint
+	}
 
-    // Facultatif : Régénération progressive du temps de sprint si le joueur ne sprinte pas
-    if !e.Player.IsSprinting && e.Player.CurrentCooldown == 0 && e.Player.CurrentSprintTime < e.Player.MaxSprintTime {
-        e.Player.CurrentSprintTime++ // Régénérer progressivement le temps de sprint
-    }
+	// Facultatif : Régénération progressive du temps de sprint si le joueur ne sprinte pas
+	if !e.Player.IsSprinting && e.Player.CurrentCooldown == 0 && e.Player.CurrentSprintTime < e.Player.MaxSprintTime {
+		e.Player.CurrentSprintTime++ // Régénérer progressivement le temps de sprint
+	}
 
 	// Camera
 	e.Camera.Target = rl.Vector2{X: e.Player.Position.X + 70, Y: e.Player.Position.Y + 70}
@@ -135,15 +136,15 @@ func (e *Engine) InGameLogic() {
 	}
 
 	// TEST DEGATS
-		if e.Player.Health <= 0 {
-			e.Player.IsAlive = false
-		}
-	
+	if e.Player.Health <= 0 {
+		e.Player.IsAlive = false
+	}
+
 	if !e.Player.IsAlive {
 		e.StateEngine = GAMEOVER
 	}
 
-	e.CheckCollisions()
+	e.CheckCollisions() // sens ca le jeu marche plus
 
 	//Musique
 	if !rl.IsMusicStreamPlaying(e.Music) {
@@ -164,33 +165,42 @@ func (e *Engine) CheckCollisions() {
 	e.MonsterCollisions()
 	// Mise à jour des monstres
 	e.UpdateMonsters()
+	if e.Player.MaxHealth < 220 {
+		e.TradeHealth() //trade PNJ soin
+	}
+	e.MonsterCheck()
 }
 
 func (e *Engine) MonsterCollisions() {
-    for i, monster := range e.Monsters {
-        if monster.IsAlive {
-            if monster.Position.X > e.Player.Position.X-20 &&
-                monster.Position.X < e.Player.Position.X+20 &&
-                monster.Position.Y > e.Player.Position.Y-20 &&
-                monster.Position.Y < e.Player.Position.Y+20 {
-                if monster.Health > 0 && e.Player.Health > 0 {
-                    e.NormalTalk(monster, "Bonjour")
-                    if time.Since(monster.LastAttackTime) > monster.Cooldown {
-                        // Le monstre attaque
-                        e.Monsters[i].Attack(&e.Player)
-                        // Met à jour le dernier moment de l'attaque
-                        e.Monsters[i].LastAttackTime = time.Now()
-                        //e.Monsters[i].Attack(&e.Player)
-                    }
-                    if rl.IsKeyPressed(rl.KeyE) {
-                        //fight.Fight(e.Player, monster)
-                        e.Player.Attack(&e.Monsters[i])
-                    }
-                }
-            }
-			
-        }
-    }
+	for i, monster := range e.Monsters {
+		if monster.IsAlive && monster.IsMove {
+			distance := rl.Vector2Distance(e.Player.Position, monster.Position)
+
+			if distance <= RangeMonster {
+				//e.NormalTalk(monster, "Bonjour")
+				if time.Since(monster.LastAttackTime) > monster.Cooldown {
+					// Le monstre attaque
+					e.Monsters[i].Attack(&e.Player)
+					// Met à jour le dernier moment de l'attaque
+					e.Monsters[i].LastAttackTime = time.Now()
+					//e.Monsters[i].Attack(&e.Player)
+				}
+			}
+			if distance <= RangePlayer && rl.IsKeyPressed(rl.KeyE) {
+				//fight.Fight(e.Player, monster)
+				e.Player.Attack(&e.Monsters[i])
+
+				if !e.Monsters[i].IsAlive {
+					e.Player.Money += monster.Worth // Donne argent
+					e.Player.Pquantity += 3         // potion de soin donner
+					e.WinLogic()
+				}
+			}
+
+		}
+
+	}
+
 }
 
 func (e *Engine) NormalTalk(m entity.Monster, sentence string) {
@@ -212,7 +222,7 @@ func (e *Engine) PauseLogic() {
 }
 func (e *Engine) UpdateMonsters() {
 	for i, monster := range e.Monsters {
-		if monster.IsAlive {
+		if monster.IsAlive && monster.IsMove {
 			distance := rl.Vector2Distance(e.Player.Position, monster.Position)
 
 			if distance <= ChaseDistance {
@@ -222,7 +232,9 @@ func (e *Engine) UpdateMonsters() {
 				e.Monsters[i] = monster // Met à jour le monstre dans la liste
 			}
 		}
+
 	}
+
 }
 
 // TeleportePlayer téléporte le joueur à une nouvelle position
@@ -266,25 +278,71 @@ func (e *Engine) TeleportPlayer4() {
 }
 
 func (e *Engine) GameOverLogic() {
-	if rl.IsKeyPressed(rl.KeyEnter) {
-		e.reset()
+	if rl.IsKeyPressed(rl.KeyEscape) {
+		e.Close()
+
 	}
 }
 
-func (e *Engine) reset() {
-	e.Player.Health = 200
-	e.Player.IsAlive = true
-	e.StateMenu = PLAY
-	e.StateEngine = INGAME
-	e.Player.Position = rl.Vector2{X: 370, Y: 280}
-		
-}
+//func (e *Engine) reset() {
+//	e.Player.Health = 200
+//	e.Player.IsAlive = true
+//	e.StateMenu = PLAY
+//	e.StateEngine = INGAME
+//	e.Player.Position = rl.Vector2{X: 370, Y: 280}
+
+//}
 
 func (e *Engine) HealthPlayer() {
-    if e.Player.HealthPlayerCooldown <= 0 && e.Player.Health <= 150 {
-        e.Player.Health += 50
+	if e.Player.HealthPlayerCooldown <= 0 && e.Player.Pquantity >= 1 {
+		e.Player.Health += 50
+		e.Player.Pquantity -= 1
+		if e.Player.Health > e.Player.MaxHealth {
+			e.Player.Health = e.Player.MaxHealth
+		}
 
-        e.Player.HealthPlayerCooldown = 300
-    }
+		e.Player.HealthPlayerCooldown = 300
+	}
 
+}
+func (e *Engine) TradeHealth() {
+	for i, monster := range e.Monsters {
+		if monster.IsAlive && !monster.IsMove {
+			distance := rl.Vector2Distance(e.Player.Position, monster.Position)
+
+			if distance <= TradeDistance && monster.Name == "Fermier" {
+				e.NormalTalk(monster, "Tu veux un 10 ou un 20 ?")
+				if rl.IsKeyPressed(rl.KeyB) && e.Player.Money >= 50 {
+					e.Player.Health = 220
+					e.Player.MaxHealth = 220
+					e.Player.Money -= 50
+
+				}
+				e.Monsters[i] = monster
+			}
+		}
+	}
+}
+
+func (e *Engine) MonsterCheck() {
+	currentTime := time.Now()
+
+	for i, monster := range e.Monsters {
+		if !e.Monsters[i].IsAlive && currentTime.Sub(monster.LastDeadTime) >= monster.CooldownPeriod {
+			//fmt.Println("Le cooldown est terminé, le monstre ressuscite.")
+			e.Monsters[i].Health = monster.MaxHealthM // Réinitialiser la santé du monstre
+			e.Monsters[i].IsAlive = true
+		}
+	}
+}
+func (e *Engine) WinLogic() {
+	for _, monster := range e.Monsters {
+		if monster.Name == "Boss" && !monster.IsAlive {
+			e.WinRendering()
+			e.StateEngine = WIN
+		}
+		if rl.IsKeyPressed(rl.KeyEscape) {
+			e.Close()
+		}
+	}
 }

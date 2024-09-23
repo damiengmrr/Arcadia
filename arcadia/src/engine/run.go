@@ -1,41 +1,45 @@
 package engine
 
 import (
-	rl "github.com/gen2brain/raylib-go/raylib"
+    rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 func (engine *Engine) Run() {
-	rl.SetTargetFPS(60)
+    rl.SetTargetFPS(60)
 
-	for engine.IsRunning {
+    for engine.IsRunning {
 
-		rl.BeginDrawing()
+        rl.BeginDrawing()
 
-		switch engine.StateMenu {
-		case HOME:
-			engine.HomeRendering()
-			engine.HomeLogic()
+        switch engine.StateMenu {
+        case HOME:
+            engine.HomeRendering()
+            engine.HomeLogic()
 
-		case SETTINGS:
-			engine.SettingsLogic()
-			engine.SettingsRendering()
+        case SETTINGS:
+            engine.SettingsLogic()
+            engine.SettingsRendering()
 
-		case PLAY:
-			switch engine.StateEngine {
-			case INGAME:
-				engine.InGameRendering()
-				engine.InGameLogic()
+        case PLAY:
+            switch engine.StateEngine {
+            case INGAME:
+                engine.InGameRendering()
+                engine.InGameLogic()
 
-			case PAUSE:
-				engine.PauseRendering()
-				engine.PauseLogic()
+            case PAUSE:
+                engine.PauseRendering()
+                engine.PauseLogic()
 
-			case GAMEOVER:
-			engine.GameOverRendering()	
-			engine.GameOverLogic()
-			}
-		}
+            case WIN:
+                engine.WinRendering()
+                engine.WinLogic()
 
-		rl.EndDrawing()
-	}
+            case GAMEOVER:
+                engine.GameOverRendering()
+                engine.GameOverLogic()
+            }
+        }
+
+        rl.EndDrawing()
+    }
 }

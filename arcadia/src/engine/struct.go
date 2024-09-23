@@ -1,44 +1,50 @@
 package engine
 
 import (
-	"main/src/entity"
+    "main/src/entity"
 
-	rl "github.com/gen2brain/raylib-go/raylib"
+    rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 type menu int
 
 const (
-	HOME     menu = iota
-	SETTINGS menu = iota
-	PLAY     menu = iota
+    HOME     menu = iota
+    SETTINGS menu = iota
+    PLAY     menu = iota
 )
 
 type engine int
 
 const (
-	INGAME  engine = iota
-	PAUSE    engine = iota
-	GAMEOVER engine = iota
+    INGAME   engine = iota
+    PAUSE    engine = iota
+    GAMEOVER engine = iota
+    WIN      engine = iota
 )
 
 type Engine struct {
-	Player   entity.Player
-	Monsters []entity.Monster
+    Player   entity.Player
+    Monsters []entity.Monster
+    //item     []item.Item
 
-	Music       rl.Music
-	MusicVolume float32
+    Music       rl.Music
+    MusicVolume float32
 
-	Sprites map[string]rl.Texture2D
+    Sprites map[string]rl.Texture2D
 
-	Camera rl.Camera2D
+    Camera rl.Camera2D
 
-	MapJSON MapJSON
+    MapJSON MapJSON
 
-	IsRunning   bool
-	StateMenu   menu
-	StateEngine engine
+    IsRunning   bool
+    StateMenu   menu
+    StateEngine engine
 }
+
 const (
-    ChaseDistance = 100 // Distance à partir de laquelle le monstre commence à poursuivre le joueur
+    ChaseDistance = 113 // Distance à partir de laquelle le monstre commence à poursuivre le joueur
+    RangeMonster  = 40  // distance attaque du monstre
+    RangePlayer   = 45  // distance attaque du joueur
+    TradeDistance = 70  // distance pour trade
 )
