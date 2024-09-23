@@ -1,6 +1,6 @@
 # ISILDOR
 
--- > avec comme dev 
+-- > made with : 
   Damien,
   Guilhem,
   Paolo,
@@ -28,7 +28,5 @@
   TRES SIMPLE ! tous d'abord il suffit d'ouvrir le ```terminal```. une fois ouvert,
   effectué la commande  : ```go run .```
   attention, bien vérifier que la bibliothéque ```Raylib``` est bien installé 
-  
 
-
-     
+** YNOV MONTPELLIER CAMPUS**
